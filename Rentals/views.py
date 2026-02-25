@@ -5,7 +5,7 @@ from rest_framework import permissions
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError, NotFound
 
 
 
@@ -25,7 +25,7 @@ class TenantViewSet(viewsets.ModelViewSet):
             leases = Lease.objects.filter(tenant=tenant)
             return Response({'tenant': tenant, 'leases': leases}, status=200 )
         except Tenant.DoesNotExist:
-            raise ValidationError("Tenant not found.")
+            raise NotFound("Tenant not found.")
 
 class RoomViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
@@ -57,14 +57,18 @@ class LeaseViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def terminate(self, request, pk=None):
         lease = self.get_object()
+        if not lease.is_active:
+            raise ValidationError("This lease is already terminated.")
+        try:
+            lease.is_active = False
+            lease.save()
 
-        lease.is_active = False
-        lease.save()
+            lease.room.is_occupied = False
+            lease.room.save()
 
-        lease.room.is_occupied = False
-        lease.room.save()
-
-        return Response(
-            {"message": "Lease terminated successfully"},
-            status=status.HTTP_200_OK
-        )
+            return Response(
+                {"message": "Lease terminated successfully"},
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            raise ValidationError(str(e))
