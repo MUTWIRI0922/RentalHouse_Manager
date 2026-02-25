@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'Rentals',
     'users',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 
