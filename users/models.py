@@ -13,10 +13,9 @@ class CustomUser(AbstractUser):
 
 
 class AdminUser(models.Model):
-    username = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     is_admin = models.BooleanField(default=False)
     is_manager = models.BooleanField(default=False)
     
 
     def __str__(self):
-        return self.username.username
+        return self.username

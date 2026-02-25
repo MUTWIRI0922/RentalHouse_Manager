@@ -9,4 +9,5 @@ router.register(r'leases', views.LeaseViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('tenants/<int:id>/leases/', views.TenantLeases, name='tenant-leases'),
 ]
