@@ -4,25 +4,6 @@
 
 ---
 
-## 📋 Table of Contents
-
-1. [Project Overview](#project-overview)
-2. [Features](#features)
-3. [Tech Stack](#tech-stack)
-4. [Getting Started](#getting-started)
-   - [Prerequisites](#prerequisites)
-   - [Installation](#installation)
-   - [Database Setup](#database-setup)
-   - [Running the Server](#running-the-server)
-5. [API Endpoints](#api-endpoints)
-6. [Testing](#testing)
-7. [Project Structure](#project-structure)
-8. [Contributing](#contributing)
-9. [License](#license)
-10. [Contact](#contact)
-
----
-
 ## 🔍 Project Overview
 
 This application helps manage rental houses with focus on:
