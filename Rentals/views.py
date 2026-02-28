@@ -9,6 +9,7 @@ from rest_framework.exceptions import ValidationError, NotFound
 
 
 
+
 from .serializers import TenantSerializer, RoomSerializer, LeaseSerializer  
 
 # Create your views here.
@@ -18,12 +19,13 @@ class TenantViewSet(viewsets.ModelViewSet):
     serializer_class = TenantSerializer
 
     @action(detail=True, methods=['get'])
-    def tenantleases(request, self, pk=None):
+    def tenantleases(self,request, pk=None):
         permission_classes = [permissions.IsAuthenticated]
         try:
-            tenant = Tenant.objects.get(pk=pk)
-            leases = Lease.objects.filter(tenant=tenant)
-            return Response({'tenant': tenant, 'leases': leases}, status=200 )
+            tenant = self.get_object()
+            leases = tenant.leases.all()
+            serializer = LeaseSerializer(leases, many=True)
+            return Response(serializer.data)
         except Tenant.DoesNotExist:
             raise NotFound("Tenant not found.")
 

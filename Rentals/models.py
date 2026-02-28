@@ -20,8 +20,8 @@ class Room(models.Model):
         return self.room_number
 
 class Lease(models.Model):
-    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, related_name='leases')
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='leases')
     start_date = models.DateField()
     end_date = models.DateField()
     is_active = models.BooleanField(default=True)
